@@ -91,3 +91,34 @@ button.btn-login {
   border-radius: 8px;
   cursor: pointer;
 }
+
+@keyframes fadeSpan {
+  0% {
+    opacity: 1;
+    transform: rotateX(90deg);
+  }
+  50% {
+    opacity: 0.5;
+    transform: rotateX(0deg);
+  }
+  100% {
+    display: none;
+    opacity: 0;
+    transform: rotateX(90deg);
+  }
+}
+
+.reg-error {
+  display: none;
+  background: #938eef;
+  padding: 4px;
+  border-radius: 4px;
+  align-items: center;
+  justify-content: center;
+  animation-name: fadeSpan;
+  animation-duration: 12000ms;
+  animation-fill-mode: forwards;
+  color: white;
+  font-weight: bold;
+  width: max-content;
+}
