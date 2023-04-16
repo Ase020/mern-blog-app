@@ -1,0 +1,29 @@
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 50px;
+  padding: 20px 0;
+
+  position: sticky;
+  top: 0;
+
+  /* bg */
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+header a {
+  text-decoration: none;
+  color: inherit;
+}
+
+header nav {
+  display: flex;
+  gap: 16px;
+}
+
+.logo {
+  width: 48px;
+}
