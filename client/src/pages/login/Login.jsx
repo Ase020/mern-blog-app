@@ -1,7 +1,35 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import "./Login.css";
 
 const Login = () => {
+  const [username, setUsername] = useState("");
+  const [password, setPassword] = useState("");
+
+  const [error, setError] = useState(false);
+
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const userLogin = {
+      username: username,
+      password: password,
+    };
+
+    const response = await fetch("http://localhost:8800/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(userLogin),
+      credentials: "include",
+    });
+
+    response.status === 200 ? navigate("/") : setError(true);
+  };
+
   return (
     <div className="login">
       <div className="card">
@@ -19,13 +47,32 @@ const Login = () => {
 
         <div className="right">
           <h1>Login</h1>
-          <form>
-            <input type="text" placeholder="username" />
-            <input type="email" name="" id="" placeholder="password" />
+          <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              placeholder="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+            />
+            <input
+              type="password"
+              placeholder="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
             <button type="submit" className="btn-login">
               Login
             </button>
           </form>
+
+          {error && (
+            <span
+              className={"login-error"}
+              style={error && { display: "flex" }}
+            >
+              Login failed❗
+            </span>
+          )}
         </div>
       </div>
     </div>

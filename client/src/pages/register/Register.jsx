@@ -27,7 +27,7 @@ const Register = () => {
       // body: JSON.stringify({ username, password, email }),
     });
 
-    response.status === 200 ? navigate("/") : setError(true);
+    response.status === 200 ? navigate("/login") : setError(true);
   };
 
   return (
