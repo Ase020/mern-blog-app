@@ -1,10 +1,13 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
 import "./Login.css";
+import { UserContext } from "../../context/UserContext";
 
 const Login = () => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const { setUserInfo } = useContext(UserContext);
 
   const [error, setError] = useState(false);
 
@@ -27,7 +30,12 @@ const Login = () => {
       credentials: "include",
     });
 
-    response.status === 200 ? navigate("/") : setError(true);
+    response.status === 200
+      ? response.json().then((userInfo) => {
+          setUserInfo(userInfo);
+          navigate("/");
+        })
+      : setError(true);
   };
 
   return (

@@ -4,6 +4,7 @@ import mongoose from "mongoose";
 import * as dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import cookieParser from "cookie-parser";
 
 import User from "./models/User.js";
 
@@ -15,6 +16,7 @@ const secret = "someRandomString";
 const app = express();
 app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 app.use(express.json());
+app.use(cookieParser());
 
 mongoose.set("strictQuery", false);
 mongoose.connect(process.env.MONGO_URL);
@@ -44,7 +46,10 @@ app.post("/login", async (req, res) => {
     // User logged in
     jwt.sign({ username, id: userDoc._id }, secret, {}, (error, token) => {
       if (error) throw error;
-      res.cookie("token", token).json("OK");
+      res.cookie("token", token).json({
+        id: userDoc._id,
+        username,
+      });
     });
   } else {
     res.status(400).json("Wrong username/password!");
@@ -54,7 +59,19 @@ app.post("/login", async (req, res) => {
 
 // check if user is logged in
 app.get("/profile", (req, res) => {
-  res.json(req.cookies);
+  const { token } = req.cookies;
+
+  jwt.verify(token, secret, {}, (error, loginInfo) => {
+    if (error) throw error;
+    res.json(loginInfo);
+  });
 });
 
-app.listen(8800);
+// Logout
+app.post("/logout", (req, res) => {
+  res.cookie("token", "", {}).json({ message: "ok" });
+});
+
+app.listen(8800, () => {
+  console.log("Server running");
+});
