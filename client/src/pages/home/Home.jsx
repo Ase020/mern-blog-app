@@ -1,19 +1,17 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Post } from "../../components";
 
 const Home = () => {
-  return (
-    <div>
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-      <Post />
-    </div>
-  );
+  const [posts, setPosts] = useState([]);
+  useEffect(() => {
+    fetch("http://localhost:8800/post")
+      .then((res) => res.json())
+      .then((posts) => {
+        setPosts(posts);
+      });
+  }, []);
+
+  return <>{posts.length > 0 && posts.map((post) => <Post {...post} />)}</>;
 };
 
 export default Home;

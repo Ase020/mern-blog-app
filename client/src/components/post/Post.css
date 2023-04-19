@@ -33,6 +33,7 @@ p.info {
 
 p.info .author {
   color: #333;
+  text-transform: capitalize;
 }
 
 p.article {
