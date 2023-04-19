@@ -5,13 +5,17 @@ import * as dotenv from "dotenv";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import cookieParser from "cookie-parser";
+import multer from "multer";
+import fs from "fs";
 
 import User from "./models/User.js";
+import Post from "./models/Post.js";
 
 dotenv.config();
 
 const salt = bcrypt.genSaltSync(10);
 const secret = "someRandomString";
+const uploadMiddleware = multer({ dest: "uploads/" });
 
 const app = express();
 app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
@@ -70,6 +74,25 @@ app.get("/profile", (req, res) => {
 // Logout
 app.post("/logout", (req, res) => {
   res.cookie("token", "", {}).json({ message: "ok" });
+});
+
+// create post
+app.post("/post", uploadMiddleware.single("file"), async (req, res) => {
+  const { originalname, path } = req.file;
+  const fileParts = originalname.split(".");
+  const ext = fileParts[fileParts.length - 1];
+  const newPath = `${path}.${ext}`;
+  fs.renameSync(path, newPath);
+
+  const { title, summary, content } = req.body;
+  const postDoc = await Post.create({
+    title,
+    summary,
+    content,
+    cover: newPath,
+  });
+
+  res.json(postDoc);
 });
 
 app.listen(8800, () => {

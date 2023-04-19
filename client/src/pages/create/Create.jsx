@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import "./Create.css";
 import { Editor } from "../../components";
@@ -9,8 +10,28 @@ const Create = () => {
   const [content, setContent] = useState("");
   const [files, setFiles] = useState("");
 
+  const navigate = useNavigate();
+
+  const createPost = async (e) => {
+    const postData = new FormData();
+    postData.set("title", title);
+    postData.set("summary", summary);
+    postData.set("content", content);
+    postData.set("file", files[0]);
+
+    e.preventDefault();
+
+    const response = await fetch("http://localhost:8800/post", {
+      method: "POST",
+      body: postData,
+    });
+
+    // console.log(await response.json());
+    response.status === 200 && navigate("/");
+  };
+
   return (
-    <form>
+    <form onSubmit={createPost}>
       <input
         type="title"
         placeholder="Title"
