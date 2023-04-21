@@ -11,6 +11,10 @@ import fs from "fs";
 import User from "./models/User.js";
 import Post from "./models/Post.js";
 
+import fileDirName from "./file-dir-name.js";
+
+const { __dirname, __filename } = fileDirName(import.meta);
+
 dotenv.config();
 
 const salt = bcrypt.genSaltSync(10);
@@ -21,6 +25,8 @@ const app = express();
 app.use(cors({ credentials: true, origin: "http://localhost:5173" }));
 app.use(express.json());
 app.use(cookieParser());
+// app.use(express.static("uploads"));
+app.use("/uploads", express.static(__dirname + "/uploads"));
 
 mongoose.set("strictQuery", false);
 mongoose.connect(process.env.MONGO_URL);
@@ -84,15 +90,28 @@ app.post("/post", uploadMiddleware.single("file"), async (req, res) => {
   const newPath = `${path}.${ext}`;
   fs.renameSync(path, newPath);
 
-  const { title, summary, content } = req.body;
-  const postDoc = await Post.create({
-    title,
-    summary,
-    content,
-    cover: newPath,
+  const { token } = req.cookies;
+  jwt.verify(token, secret, {}, async (error, loginInfo) => {
+    if (error) throw error;
+    const { title, summary, content } = req.body;
+    const postDoc = await Post.create({
+      title,
+      summary,
+      content,
+      cover: newPath,
+      author: loginInfo.id,
+    });
+    res.json(postDoc);
   });
+});
 
-  res.json(postDoc);
+// get post
+app.get("/post", async (req, res) => {
+  const posts = await Post.find()
+    .populate("author", ["username"])
+    .sort({ createdAt: -1 })
+    .limit(20);
+  res.json(posts);
 });
 
 app.listen(8800, () => {

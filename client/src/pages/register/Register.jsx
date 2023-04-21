@@ -34,7 +34,7 @@ const Register = () => {
     <div className="register">
       <div className="card-register">
         <div className="left-register">
-          <h1>Lama Social.</h1>
+          <h1>felix Blog.</h1>
           <p>
             Welcome to <span className="logo">aseDesign.</span> blogsite the
             home of entertainment and knowledge.
