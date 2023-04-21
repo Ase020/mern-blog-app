@@ -2,7 +2,7 @@ import { Route, Routes } from "react-router-dom";
 
 import "./App.css";
 import { Layout } from "./components";
-import { Create, Home, Login, Register } from "./pages";
+import { Create, Home, Login, PostPage, Register } from "./pages";
 import { UserContextProvider } from "./context/UserContext";
 
 function App() {
@@ -14,6 +14,7 @@ function App() {
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route path="/create" element={<Create />} />
+          <Route path="/post/:id" element={<PostPage />} />
         </Route>
       </Routes>
     </UserContextProvider>

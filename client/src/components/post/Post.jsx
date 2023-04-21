@@ -1,4 +1,5 @@
 import { formatISO9075 } from "date-fns";
+import { Link } from "react-router-dom";
 
 import "./Post.css";
 
@@ -7,11 +8,15 @@ const Post = ({ _id, title, summary, cover, content, createdAt, author }) => {
     <section className="posts">
       <div className="entry">
         <div className="image">
-          <img src={`http://localhost:8800/${cover}`} alt="" />
+          <Link to={`/post/${_id}`}>
+            <img src={`http://localhost:8800/${cover}`} alt="" />
+          </Link>
         </div>
 
         <div className="texts">
-          <h2>{title}</h2>
+          <Link to={`/post/${_id}`}>
+            <h2>{title}</h2>
+          </Link>
 
           <p className="info">
             <span className="author">{author.username}</span>

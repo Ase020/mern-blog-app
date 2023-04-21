@@ -114,6 +114,13 @@ app.get("/post", async (req, res) => {
   res.json(posts);
 });
 
+// get single post
+app.get("/post/:id", async (req, res) => {
+  const { id } = req.params;
+  const postDoc = await Post.findById(id).populate("author", ["username"]);
+  res.json(postDoc);
+});
+
 app.listen(8800, () => {
   console.log("Server running");
 });

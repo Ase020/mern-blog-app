@@ -1,0 +1,42 @@
+.post-page {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.post-page .img {
+  max-height: 300px;
+  overflow: hidden;
+  display: flex;
+}
+
+.post-page .img img {
+  width: 100%;
+  object-fit: cover;
+  object-position: center center;
+}
+
+.post-page h1 {
+  font-size: 40px;
+  line-height: 54px;
+  margin-bottom: 12px;
+}
+
+.post-page a {
+  color: #333;
+  text-decoration: underline;
+}
+
+.post-page .author-tag .author {
+  text-transform: capitalize;
+  font-weight: bold;
+}
+
+time {
+  font-size: 0.7rem;
+  color: #aaa;
+}
+
+.article {
+  line-height: 28px;
+}

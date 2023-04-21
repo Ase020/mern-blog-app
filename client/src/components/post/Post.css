@@ -7,9 +7,15 @@ section.posts div.entry img {
 
 section.posts .entry {
   display: grid;
-  grid-template-columns: 0.8fr 1.2fr;
+  grid-template-columns: 1fr;
   gap: 20px;
   margin-bottom: 32px;
+}
+
+@media screen and (min-width: 600px) {
+  section.posts .entry {
+    grid-template-columns: 0.8fr 1.2fr;
+  }
 }
 
 .texts {
@@ -38,4 +44,9 @@ p.info .author {
 
 p.article {
   line-height: 1.4rem;
+}
+
+a {
+  text-decoration: none;
+  color: inherit;
 }
